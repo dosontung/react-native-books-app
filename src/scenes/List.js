@@ -39,29 +39,29 @@ class List extends Component {
 
   render() {
     const { books } = this.props
-    let booklist = []
-    console.tron.log(books)
-
-    books.map((book) => {
-      booklist = book.items
-      console.tron.log(book.items)
-    })
 
     return (
       <Container>
-        <FlatList
-          data={booklist}
-          keyExtractor={item => item.id}
-          numColumns={3}
-          renderItem={item => (
-            <Thumbnail onPress={() => {}}>
-              <Image
-                source={{ uri: item.volumeInfo.imageLinks.thumbnail }}
-                style={styles.thumbnail}
-              />
-            </Thumbnail>
-          )}
-        />
+        <Header title='Design Books' />
+        {books.map((booklist) => {
+          const book = booklist.items
+          return (
+            <FlatList
+              data={book}
+              numColumns={3}
+              keyExtractor={item => item.id}
+              renderItem={({ item }) => (
+                <Thumbnail onPress={() => {}}>
+                  <Image
+                    source={{ uri: item.volumeInfo.imageLinks.thumbnail }}
+                    style={styles.thumbnail}
+                  />
+                </Thumbnail>
+              )
+              }
+            />
+          )
+        })}
       </Container>
 
     )
