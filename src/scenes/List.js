@@ -1,35 +1,40 @@
 import React, { Component } from 'react'
-import {
-  FlatList, Image, Text, StyleSheet,
-} from 'react-native'
 import PropTypes from 'prop-types'
+import { StyleSheet } from 'react-native'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as BooksActions from '~/store/actions/books'
+import { Creators as BooksActions } from '~/store/ducks/books'
 
 import styled from 'styled-components/native'
-import { colors } from '~/styles'
+import { colors, metrics } from '~/styles'
 
 import Header from '~/components/Header'
+import BookItem from '~/components/BookItem'
 
 const Container = styled.SafeAreaView`
   background-color: ${colors.primary};
   flex: 1;
 `
 
-const Thumbnail = styled.TouchableOpacity`
+const FlatList = styled.FlatList`
+  padding-top: ${metrics.basePadding};
 `
+
 const styles = StyleSheet.create({
-  thumbnail: {
-    height: 130,
-    width: 100,
+  columnWrapper: {
+    justifyContent: 'space-between',
+    marginBottom: metrics.baseMargin * 2,
+    marginHorizontal: metrics.baseMargin * 2,
   },
 })
 
 class List extends Component {
   static propTypes = {
     getBooksRequest: PropTypes.func.isRequired,
+    books: PropTypes.shape({
+      id: PropTypes.string,
+    }).isRequired,
   }
 
   componentDidMount() {
@@ -38,38 +43,25 @@ class List extends Component {
   }
 
   render() {
-    const { books } = this.props
+    const { books: { data } } = this.props
 
     return (
       <Container>
         <Header title='Design Books' />
-        {books.map((booklist) => {
-          const book = booklist.items
-          return (
-            <FlatList
-              data={book}
-              numColumns={3}
-              keyExtractor={item => item.id}
-              renderItem={({ item }) => (
-                <Thumbnail onPress={() => {}}>
-                  <Image
-                    source={{ uri: item.volumeInfo.imageLinks.thumbnail }}
-                    style={styles.thumbnail}
-                  />
-                </Thumbnail>
-              )
-              }
-            />
-          )
-        })}
+        <FlatList
+          data={data}
+          numColumns={3}
+          keyExtractor={item => String(item.id)}
+          renderItem={({ item }) => <BookItem book={item} />}
+          columnWrapperStyle={styles.columnWrapper}
+        />
       </Container>
-
     )
   }
 }
 
 const mapStateToProps = state => ({
-  books: state.books.data,
+  books: state.books,
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators(BooksActions, dispatch)
