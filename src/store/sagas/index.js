@@ -1,8 +1,11 @@
 import { all, takeLatest } from 'redux-saga/effects'
-import { getBooksRequest } from './books'
+
+import { Types as BooksTypes } from '~/store/ducks/books'
+
+import { getBooks } from './books'
 
 export default function* rootSaga() {
   return yield all([
-    takeLatest('GET_BOOKS_REQUEST', getBooksRequest),
+    takeLatest(BooksTypes.GET_REQUEST, getBooks),
   ])
 }
