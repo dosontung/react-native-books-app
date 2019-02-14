@@ -6,15 +6,11 @@ import Details from '~/scenes/Details'
 
 const Routes = createAppContainer(
   createSwitchNavigator({
-    // Home,
-    Books: createStackNavigator(
-      {
-        List,
-        Details,
-      }, {
-        headerMode: 'none',
-      },
-    ),
+    // Home: { screen: Home },
+    Books: createStackNavigator({
+      List: { screen: List },
+      Details: { screen: Details },
+    }),
   }),
 )
 
