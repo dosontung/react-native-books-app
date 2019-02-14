@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Image } from 'react-native'
+import { ActivityIndicator, StyleSheet } from 'react-native'
 import PropTypes from 'prop-types'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 import styled from 'styled-components/native'
 import { colors } from '~/styles'
@@ -24,15 +25,15 @@ const Footer = styled.View`
 
 const Tagline = styled.Text`
   color: ${colors.black};
-  font-size: 24px
+  font-size: 24px;
 `
 
 const Title = styled.Text`
   color: ${colors.black};
-  font-size: 48px
+  font-size: 48px;
 `
 
-const Button = styled.TouchableOpacity`
+const Button = styled.TouchableHighlight`
   display: flex;
   width: 80px;
   height: 80px;
@@ -43,6 +44,17 @@ const Button = styled.TouchableOpacity`
   box-shadow: 0px 7px 15px rgba(60, 120, 191, 0.422639);
 `
 
+const styles = StyleSheet.create({
+  icon: {
+    marginLeft: 2,
+    marginTop: 1,
+  },
+  loading: {
+    marginLeft: 3,
+    marginTop: 2,
+  },
+})
+
 class Home extends Component {
   static propTypes = {
     navigation: PropTypes.shape({
@@ -50,12 +62,25 @@ class Home extends Component {
     }).isRequired,
   }
 
+  static navigationOptions = {
+    header: null,
+  }
+
+  state = {
+    loading: false,
+  }
+
   goToList = () => {
     const { navigation } = this.props
-    navigation.navigate('Books')
+    this.setState({ loading: true })
+
+    setInterval(() => {
+      navigation.navigate('Books')
+    }, 500)
   }
 
   render() {
+    const { loading } = this.state
     return (
       <Background source={require('~/assets/images/background.jpg')}>
         <Container>
@@ -64,7 +89,16 @@ class Home extends Component {
         </Container>
         <Footer>
           <Button onPress={this.goToList}>
-            <Image source={require('~/assets/images/arrow-right.png')} />
+            {loading ? (
+              <ActivityIndicator size='large' color={colors.white} style={styles.loading} />
+            ) : (
+              <Icon
+                name='ios-arrow-round-forward'
+                size={48}
+                color={colors.white}
+                style={styles.icon}
+              />
+            )}
           </Button>
         </Footer>
       </Background>

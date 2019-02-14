@@ -1,13 +1,8 @@
 import React from 'react'
-import {
-  Image, StyleSheet,
-} from 'react-native'
+import { StyleSheet, TouchableHighlight } from 'react-native'
 import PropTypes from 'prop-types'
-
 import styled from 'styled-components/native'
 
-const Thumbnail = styled.TouchableOpacity`
-`
 const styles = StyleSheet.create({
   thumbnail: {
     height: 130,
@@ -15,19 +10,22 @@ const styles = StyleSheet.create({
   },
 })
 
-const BookItem = ({ book }) => (
-  <Thumbnail onPress={() => {}}>
-    <Image
-      source={{ uri: book.volumeInfo.imageLinks.thumbnail }}
-      style={styles.thumbnail}
-    />
-  </Thumbnail>
+const Thumbnail = styled.Image`
+  height: 130px;
+  width: 100px;
+`
+
+const BookItem = ({ book, onPress }) => (
+  <TouchableHighlight onPress={onPress}>
+    <Thumbnail source={{ uri: book.volumeInfo.imageLinks.thumbnail }} style={styles.thumbnail} />
+  </TouchableHighlight>
 )
 
 BookItem.propTypes = {
   book: PropTypes.shape({
     thumbnail: PropTypes.string,
   }).isRequired,
+  onPress: PropTypes.func.isRequired,
 }
 
 export default BookItem
