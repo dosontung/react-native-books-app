@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, ActivityIndicator } from 'react-native'
+import { StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native'
 import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/Ionicons'
 
@@ -26,7 +26,7 @@ const FlatList = styled.FlatList`
 const styles = StyleSheet.create({
   columnWrapper: {
     justifyContent: 'space-between',
-    marginBottom: metrics.baseMargin * 2,
+    marginBottom: metrics.baseMargin * 3,
     marginHorizontal: metrics.baseMargin * 2,
   },
   loading: {
@@ -47,10 +47,18 @@ class List extends Component {
     }).isRequired,
   }
 
-  static navigationOptions = {
+  static navigationOptions = ({ navigation }) => ({
     headerTitle: <Title title='Harry Potter' />,
     headerLeft: <Icon name='ios-menu' size={28} color={colors.black} />,
-    headerRight: <Icon name='ios-search' size={28} color={colors.black} />,
+    headerRight: (
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('Search')
+        }}
+      >
+        <Icon name='ios-search' size={28} color={colors.black} />
+      </TouchableOpacity>
+    ),
     headerStyle: {
       backgroundColor: colors.primary,
       borderBottomWidth: 0,
@@ -63,16 +71,21 @@ class List extends Component {
     headerRightContainerStyle: {
       paddingRight: metrics.basePadding,
     },
-  }
+  })
 
   componentDidMount() {
+    this.onRefresh()
+  }
+
+  onRefresh = () => {
     const { getBooksRequest } = this.props
     getBooksRequest()
   }
 
+
   render() {
     const {
-      books: { data, loading },
+      books: { data, loading, refreshing },
       navigation: { navigate },
     } = this.props
 
@@ -89,6 +102,8 @@ class List extends Component {
               <BookItem onPress={() => navigate('Details', { book: item })} book={item} />
             )}
             columnWrapperStyle={styles.columnWrapper}
+            onRefresh={this.onRefresh}
+            refreshing={refreshing}
           />
         )}
       </Container>
