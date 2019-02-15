@@ -1,14 +1,7 @@
 import React from 'react'
-import { StyleSheet, TouchableHighlight } from 'react-native'
+import { TouchableHighlight } from 'react-native'
 import PropTypes from 'prop-types'
 import styled from 'styled-components/native'
-
-const styles = StyleSheet.create({
-  thumbnail: {
-    height: 130,
-    width: 100,
-  },
-})
 
 const Thumbnail = styled.Image`
   height: 130px;
@@ -17,7 +10,7 @@ const Thumbnail = styled.Image`
 
 const BookItem = ({ book, onPress }) => (
   <TouchableHighlight onPress={onPress}>
-    <Thumbnail source={{ uri: book.volumeInfo.imageLinks.thumbnail }} style={styles.thumbnail} />
+    <Thumbnail source={{ uri: book.volumeInfo.imageLinks.thumbnail }} />
   </TouchableHighlight>
 )
 
