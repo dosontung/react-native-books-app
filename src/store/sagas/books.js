@@ -3,7 +3,7 @@ import { call, put } from 'redux-saga/effects'
 
 import { Creators as BooksActions } from '~/store/ducks/books'
 
-const query = 'Design Books'
+const query = 'Harry Potter'
 
 export function* getBooks() {
   try {

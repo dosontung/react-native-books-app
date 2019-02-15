@@ -8,14 +8,20 @@ const initialState = {
   data: [],
   loading: false,
   error: null,
+  refreshing: false,
 }
 
 export default function books(state = initialState, action) {
   switch (action.type) {
     case Types.GET_REQUEST:
-      return { ...state, loading: true }
+      return { ...state, loading: true, refreshing: true }
     case Types.GET_SUCCESS:
-      return { data: action.payload.data, loading: false, error: null }
+      return {
+        data: action.payload.data,
+        loading: false,
+        refreshing: false,
+        error: false,
+      }
     case Types.GET_FAILURE:
       return { ...state, loading: false, error: action.payload.error }
     default:
