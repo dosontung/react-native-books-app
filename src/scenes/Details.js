@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, StyleSheet } from 'react-native'
+import { Image, StyleSheet, View } from 'react-native'
 import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/Ionicons'
 
@@ -16,19 +16,20 @@ const Container = styled.SafeAreaView`
 const BookWrapper = styled.View`
   padding: ${metrics.basePadding}px;
   padding-bottom: ${metrics.basePadding * 1.5}px;
-  flex-direction: row;
   background-color: ${colors.primary};
+  flex-direction: row;
 `
 
 const ThumbnailWrapper = styled.View`
   flex-direction: column;
   padding-right: ${metrics.basePadding}px;
+  width: ${100 + metrics.basePadding}px;
 `
 
 const Thumbnail = styled.View`
   box-shadow: 0px 15px 20px rgba(184, 118, 12, 0.8);
   height: 130px;
-  width: 100px;
+  max-width: 100%;
 `
 
 const Pages = styled.Text`
@@ -40,7 +41,9 @@ const Pages = styled.Text`
 `
 
 const InfoWrapper = styled.View`
-  flex-shrink: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
 `
 
 const BookTitle = styled.Text`
@@ -58,8 +61,9 @@ const Author = styled.Text`
 `
 
 const PriceWrapper = styled.View`
-  flex-direction: row;
   margin-top: ${metrics.baseMargin * 2};
+  flex-direction: row;
+  align-items: center;
 `
 
 const Price = styled.Text`
@@ -71,28 +75,14 @@ const Price = styled.Text`
 `
 
 const Rating = styled.View`
+  justify-content: center;
   flex-direction: row;
-  align-items: center;
-`
-
-const DescriptionWrapper = styled.ScrollView`
-  padding-horizontal: ${metrics.basePadding}px;
-`
-
-const Description = styled.Text`
-  padding-top: ${metrics.basePadding * 1.5}px;
-  padding-bottom: ${metrics.basePadding}px;
-  font-family: 'Roboto';
-  font-size: 14px;
-  font-weight: normal;
-  color: ${colors.gray};
-  line-height: 30px;
 `
 
 const ButtonsWrapper = styled.View`
+  margin-top: ${metrics.basePadding * 1.5}px;
   flex-direction: row;
   justify-content: flex-end;
-  margin-top: ${metrics.basePadding * 1.5}px;
 `
 
 const BuyButton = styled.TouchableOpacity`
@@ -121,6 +111,20 @@ const LikeButton = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
   margin-left: ${metrics.baseMargin};
+`
+
+const DescriptionWrapper = styled.ScrollView`
+  padding-horizontal: ${metrics.basePadding}px;
+`
+
+const Description = styled.Text`
+  padding-top: ${metrics.basePadding * 1.5}px;
+  padding-bottom: ${metrics.basePadding}px;
+  font-family: 'Roboto';
+  font-size: 14px;
+  font-weight: normal;
+  color: ${colors.gray};
+  line-height: 30px;
 `
 
 const styles = StyleSheet.create({
@@ -154,21 +158,23 @@ const Details = ({ navigation }) => {
           </Pages>
         </ThumbnailWrapper>
         <InfoWrapper>
-          <BookTitle>{volumeInfo.title}</BookTitle>
-          <Author>
-            {'by '}
-            {volumeInfo.authors}
-          </Author>
-          <PriceWrapper>
-            <Price>$9.99</Price>
-            <Rating>
-              <Icon name='ios-star' size={15} color={colors.darker} style={styles.rateIcon} />
-              <Icon name='ios-star' size={15} color={colors.darker} style={styles.rateIcon} />
-              <Icon name='ios-star' size={15} color={colors.darker} style={styles.rateIcon} />
-              <Icon name='ios-star' size={15} color={colors.darker} style={styles.rateIcon} />
-              <Icon name='ios-star' size={15} color={colors.yep} style={styles.rateIcon} />
-            </Rating>
-          </PriceWrapper>
+          <View>
+            <BookTitle>{volumeInfo.title}</BookTitle>
+            <Author>
+              {'by '}
+              {volumeInfo.authors}
+            </Author>
+            <PriceWrapper>
+              <Price>$9.99</Price>
+              <Rating>
+                <Icon name='ios-star' size={15} color={colors.darker} style={styles.rateIcon} />
+                <Icon name='ios-star' size={15} color={colors.darker} style={styles.rateIcon} />
+                <Icon name='ios-star' size={15} color={colors.darker} style={styles.rateIcon} />
+                <Icon name='ios-star' size={15} color={colors.darker} style={styles.rateIcon} />
+                <Icon name='ios-star' size={15} color={colors.yep} style={styles.rateIcon} />
+              </Rating>
+            </PriceWrapper>
+          </View>
           <ButtonsWrapper>
             <BuyButton onPress={() => {}}>
               <BuyButtonText>Buy</BuyButtonText>
@@ -188,7 +194,7 @@ const Details = ({ navigation }) => {
 
 Details.navigationOptions = {
   headerTitle: <Title title='Details' />,
-  headerRight: <Icon name='ios-search' size={28} color={colors.black} />,
+  headerRight: null,
   headerStyle: {
     backgroundColor: colors.primary,
     borderBottomWidth: 0,
@@ -200,9 +206,11 @@ Details.navigationOptions = {
 }
 
 // Details.propTypes = {
-//   navigation: PropTypes.shape({
-
-//   })
+//   navigation: PropTypes.shape(
+//     PropTypes.shape({
+//       volumeInfo: PropTypes.string.isRequired,
+//     }),
+//   ),
 // }
 
 export default Details
